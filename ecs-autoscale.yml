@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  ClusterName:
+    Description: name of the cluster
+    Type: String
+    Default: ecs-cluster2
+Resources:
+  EcsCluster:
+    Type: "AWS::ECS::Cluster"
+    Properties:
+      ClusterName: !Ref ClusterName
+      Tags:
+        - Key: Name
+          Value: !Ref ClusterName
+  
+  

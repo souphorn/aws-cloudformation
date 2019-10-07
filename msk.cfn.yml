@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  KafkaCluster:
+    Type: 'AWS::MSK::Cluster'
+    Properties:
+      ClusterName: kafka-cluster2
+      NumberOfBrokerNodes: 3
+      KafkaVersion: "2.2.1"
+      BrokerNodeGroupInfo:
+        BrokerAZDistribution: DEFAULT
+        ClientSubnets: 
+          - "subnet-58559a01"
+          - "subnet-a7f0f0ee"
+          - "subnet-ce4053a9"
+        InstanceType: "kafka.m5.large"
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: d42ad464-1955-42c1-89d5-0522cd4775a7
+Metadata:
+  'AWS::CloudFormation::Designer':
+    d42ad464-1955-42c1-89d5-0522cd4775a7:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: -110
+        'y': 66.58333333333333
+      z: 0

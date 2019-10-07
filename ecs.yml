@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  EcsCluster:
+    Type: "AWS::ECS::Cluster"
+    Properties:
+      ClusterName: "spn-ecs-cluster"
+      Tags:
+        - Key: Name
+          Value: "my-ecs-cluster"
+  

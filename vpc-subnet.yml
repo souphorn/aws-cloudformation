@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  VPC:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: 10.0.0.0/16 #required
+      Tags:
+        - Key: Name
+          Value: spn-vpc
+  Subnet:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      CidrBlock: 10.0.1.0/24 #required
+      Tags:
+        - Key: Name
+          Value: "spn-subnet"
+      VpcId: !Ref VPC #required
+  
