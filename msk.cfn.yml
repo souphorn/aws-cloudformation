@@ -7,7 +7,31 @@ Resources:
       Tags:
         - Key: Name
           Value: vpc-for-kafka
-  
+  VpcSubnet1:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      CidrBlock: 10.0.1.0/24 #required
+      Tags:
+        - Key: Name
+          Value: vpc-kafka-subnet1
+      VpcId: !Ref Vpc #required
+  VpcSubnet2:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      CidrBlock: 10.0.2.0/24 #required
+      Tags:
+        - Key: Name
+          Value: vpc-kafka-subnet2
+      VpcId: !Ref Vpc #required
+  VpcSubnet3:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      CidrBlock: 10.0.3.0/24 #required
+      Tags:
+        - Key: Name
+          Value: vpc-kafka-subnet3
+      VpcId: !Ref Vpc #required
+
   KafkaCluster:
     Type: 'AWS::MSK::Cluster'
     Properties:
