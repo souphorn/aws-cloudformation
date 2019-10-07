@@ -3,7 +3,7 @@ Resources:
   KafkaCluster:
     Type: 'AWS::MSK::Cluster'
     Properties:
-      ClusterName: kafka-cluster2
+      ClusterName: kafka-cluster
       NumberOfBrokerNodes: 3
       KafkaVersion: "2.2.1"
       BrokerNodeGroupInfo:
