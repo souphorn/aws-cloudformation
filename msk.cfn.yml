@@ -6,44 +6,47 @@ Resources:
       CidrBlock: 10.0.0.0/16 #required
       Tags:
         - Key: Name
-          Value: vpc-for-kafka
+          Value: spn-vpc-for-kafka
   VpcSubnet1:
     Type: "AWS::EC2::Subnet"
     Properties:
+      AvailabilityZone: ap-southeast-1a
       CidrBlock: 10.0.1.0/24 #required
       Tags:
         - Key: Name
-          Value: vpc-kafka-subnet1
+          Value: spn-vpc-kafka-subnet1
       VpcId: !Ref Vpc #required
   VpcSubnet2:
     Type: "AWS::EC2::Subnet"
     Properties:
+      AvailabilityZone: ap-southeast-1b
       CidrBlock: 10.0.2.0/24 #required
       Tags:
         - Key: Name
-          Value: vpc-kafka-subnet2
+          Value: spn-vpc-kafka-subnet2
       VpcId: !Ref Vpc #required
   VpcSubnet3:
     Type: "AWS::EC2::Subnet"
     Properties:
+      AvailabilityZone: ap-southeast-1c
       CidrBlock: 10.0.3.0/24 #required
       Tags:
         - Key: Name
-          Value: vpc-kafka-subnet3
+          Value: spn-vpc-kafka-subnet3
       VpcId: !Ref Vpc #required
-
+  
   KafkaCluster:
     Type: 'AWS::MSK::Cluster'
     Properties:
-      ClusterName: kafka-cluster
+      ClusterName: spn-kafka-cluster
       NumberOfBrokerNodes: 3
       KafkaVersion: "2.2.1"
       BrokerNodeGroupInfo:
         BrokerAZDistribution: DEFAULT
         ClientSubnets: 
-          - "subnet-58559a01"
-          - "subnet-a7f0f0ee"
-          - "subnet-ce4053a9"
+          - !Ref VpcSubnet1
+          - !Ref VpcSubnet2
+          - !Ref VpcSubnet3
         InstanceType: "kafka.m5.large"
     Metadata:
       'AWS::CloudFormation::Designer':

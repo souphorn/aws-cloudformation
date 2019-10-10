@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  SpnVpc:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: 10.0.0.0/16 #required
+      Tags:
+        - Key: Name
+          Value: spn-vpc
+  SpnVpcSubnet1:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: ap-southeast-1a
+      CidrBlock: 10.0.1.0/24 #required
+      Tags:
+        - Key: Name
+          Value: spn-vpc-subnet1
+      VpcId: !Ref SpnVpc #required
+  
+  
+  SpnInternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: spn-internet-gateway
+  SpnVpcGatewayAttachment:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref SpnInternetGateway
+      VpcId: !Ref SpnVpc #required
+  SpnRouteTable:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: spn-route-table
+      VpcId: !Ref SpnVpc #required
+  SpnRouteTableSubnet1:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref SpnRouteTable #required
+      SubnetId: !Ref SpnVpcSubnet1 #required
+  
+  SpnRouteInternet:
+    Type: "AWS::EC2::Route"
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref SpnInternetGateway
+      RouteTableId: !Ref SpnRouteTable #required
+  SpnSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Open port 80 for web service #required
+      GroupName: spn-security-group
+      SecurityGroupIngress:
+        # For web
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          # For ssh
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref SpnVpc
+
+  SpnEc2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-048a01c78f7bae4aa
+      InstanceType: t2.nano
+      KeyName: spn-key
+      SubnetId: !Ref SpnVpcSubnet1
+      SecurityGroupIds:
+        - !Ref SpnSecurityGroup
+      Tags:
+        - Key: Name
+          Value: spn-ec2-instance
+      UserData:
+        Fn::Base64:
+          !Sub | 
+            #!/bin/bash -xe
+            sudo yum update -y
+            sudo yum install -y httpd 
+            sudo systemctl start httpd
+  
+  SpnEIP:
+    Type: "AWS::EC2::EIP"
+  
+  SpnEIPAssociate:
+    Type: "AWS::EC2::EIPAssociation"
+    Properties:
+      EIP: !Ref SpnEIP
+      InstanceId: !Ref SpnEc2Instance
+  
+  
+  

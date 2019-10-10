@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  HostedZoneId:
+    Description: zone id
+    Type: String
+  Value:
+    Description: value of the the record
+    Type: String
+  Type:
+    Description: Record type
+    Type: String
+  Name:
+    Description: dns  record name
+    Type: String
+    Default: abc.souphorn.com
+Resources:
+  recordSet:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      Name: !Ref Name #required
+      Type: !Ref Type  #required
+      HostedZoneId:  !Ref HostedZoneId
+      TTL: 300
+      ResourceRecords:
+        - !Ref Value
+  

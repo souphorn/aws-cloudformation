@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Route53:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      Name: abc.thefasthair.com #required
+      Type: TXT #required
+  
