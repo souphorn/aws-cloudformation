@@ -76,6 +76,7 @@ Resources:
           logger.setLevel(logging.INFO)
           
           def handler(event, context):
+            ## Todo: differentiate between event type to propertly such as create, update, and delete
               logger.info('souphorn got event{}'.format(event))
               status = 'SUCCESS'
               physicalResourceId="abc123"
