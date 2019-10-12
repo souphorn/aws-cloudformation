@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  CreateRecordsetPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyDocument: 
+        {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Effect: "Allow",
+              Action: "route53:ChangeResourceRecordSets",
+              Resource: "*"
+            }
+          ]
+        }
+      PolicyName: spn-create-recordset-policy #required
+      Roles:
+        - !Ref CreateRecordsetRole
+  
+  CreateRecordsetRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: {
+        Version: "2012-10-17",
+        Statement: [
+          {
+            Action: "sts:AssumeRole",
+            Effect: "Allow",
+            Principal: {
+              Service: "lambda.amazonaws.com"
+            }
+          }
+        ]
+      } #required
+      RoleName: spn-lambda-role

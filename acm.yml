@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Domain:
+    Description: Domain to request the cerficate
+    Type: String
+Resources:
+    Acm:
+      Type: "AWS::CertificateManager::Certificate"
+      Properties:
+        DomainName: !Ref Domain #required
+        ValidationMethod: DNS
+
+    
+    
